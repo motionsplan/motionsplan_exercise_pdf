@@ -21,8 +21,8 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $this->setX(0);
     $this->setY(0);    
     $title = "  " . $node->title;
-    $intro = $node->field_exercise_intro[0]['value'];
-    $description = $node->field_exercise_guide[0]['value'];
+    $intro = $node->field_exercise_intro[LANGUAGE_NONE][0]['value'];
+    $description = $node->field_exercise_guide[LANGUAGE_NONE][0]['value'];
 
     $keywords = array();
     foreach ($node->taxonomy as $taxonomy) {
@@ -47,7 +47,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $this->SetFont('Helvetica', null, 10);
     $this->MultiCell(40, 5, implode($keywords, "\n"), 0, 'C');
 
-    if (!empty($node->field_exercise_images[0])) {
+    if (!empty($node->field_exercise_images[LANGUAGE_NONE][0])) {
       $x = 10;
       $y = 25;
       $width = 0;
