@@ -116,26 +116,32 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $this->setX(6);
     $this->MultiCell(50, 8, $url, 0, 'C');
 
-    $image_url = "http://chart.apis.google.com/chart?cht=qr&chs=100x100&chl=" . $url;
-  
-    $ch = curl_init();
-    $timeout = 0;
-    curl_setopt ($ch, CURLOPT_URL, $image_url);
-    curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-
-    // Getting binary data
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-
-    $image = curl_exec($ch);
-
-    curl_close($ch);
-
-    $f = fopen(getcwd() . '/' . file_directory_path() . '/barcodes/'. md5(request_uri()) . '.png', 'w');
-    fwrite($f, $image);
-    fclose($f);
-
-    $this->Image(getcwd() . '/' . file_directory_path() . '/barcodes/' . md5(request_uri()) . '.png', 160, 245, 45, 0, '');
+    $qr_file = $this->getBarcodePath($url, 200, 200);
+    if ($qr_file !== false && file_exists($qr_file)) {
+      $this->Image($qr_file,  160, 245, 45, 0, '');
+    }
   }
+  
+  /**
+   * Gets barcode file path
+   *
+   * @param string  $url url
+   * @param integer $height Height
+   * @param integer $width Width
+   *
+   * @return string or false
+   */
+  protected function getBarcodePath($url, $height, $width) {
+    $chart = array(
+      '#chart_id' => 'exercise_chart',
+      '#type' => CHART_TYPE_QR,
+      '#size' => chart_size(200, 200) 
+    );
+        
+    $chart['#data'][] = '';
+    $chart['#labels'][] = $url;
+        
+    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
+  }  
 }
 
