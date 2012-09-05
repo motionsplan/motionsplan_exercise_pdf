@@ -56,7 +56,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
       $picture_rows = 1;
       
       $pr_row = 0;
-      foreach ($node->field_exercise_images as $image) {
+      foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
         $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $image['uri']));
         
         if (file_exists($picture_filename)) {
