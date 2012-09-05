@@ -253,6 +253,7 @@ function article_pdf($node) {
  */
 function exercise_pdf_portrait($node) {
   global $base_url;
+  ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layout/portrait');
 
   $title = utf8_decode($node->title);
   $pdf = new ExercisePdfPortrait();
@@ -272,6 +273,7 @@ function exercise_pdf_portrait($node) {
  */
 function exercise_pdf_landscape($node) {
   global $base_url;
+  ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layout/landscape');
 
   $title = utf8_decode($node->title);
   $pdf = new ExercisePdfLandscape();
@@ -291,6 +293,8 @@ function exercise_pdf_landscape($node) {
  */
 function exercise_pdf_advanced($node) {
   global $base_url;
+
+  ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait_extended');
 
   $title = utf8_decode($node->title);
   $pdf = new ExerciseAdvancedPdfPortrait();
