@@ -73,17 +73,24 @@ class ExerciseProgramCompactPdf extends FPDF {
 
   /**
    * If the height h would cause an overflow, add a new page immediately
+   *
+   * @param integer $h Height
+   *
+   * @return void
    */
   function CheckPageBreak($h) {
-    if ($this->GetY()+$h>$this->PageBreakTrigger) {
+    if ($this->GetY() + $h > $this->PageBreakTrigger) {
       $this->AddPage($this->CurOrientation);
     }
   }
   
   /**
    * Computes the number of lines a MultiCell of width w will take
+   *
+   * @param integer $w   Width
+   * @param string  $txt Text
    */
-  function NbLines($w,$txt) {
+  function NbLines($w, $txt) {
     $cw=&$this->CurrentFont['cw'];
     if ($w==0) {
       $w=$this->w-$this->rMargin-$this->x;
