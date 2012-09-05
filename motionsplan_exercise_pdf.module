@@ -78,12 +78,12 @@ function article_pdf_access($node) {
 }
 
 /**
-* Plugin for the PDF printouts.
-*
-* Implements hook_ctools_plugin_type().
-*
-* Has plenty options. See ctools/help/plugins-creating.html
-*/
+ * Plugin for the PDF printouts.
+ *
+ * Implements hook_ctools_plugin_type().
+ *
+ * Has plenty options. See ctools/help/plugins-creating.html
+ */
 function motionsplan_exercise_pdf_ctools_plugin_type() {
   $plugins['layouts'] = array(
     'use hooks' => TRUE,
@@ -92,8 +92,8 @@ function motionsplan_exercise_pdf_ctools_plugin_type() {
 }
 
 /**
-* Implements hook_ctools_plugin_directory().
-*/
+ * Implements hook_ctools_plugin_directory().
+ */
 function motionsplan_exercise_pdf_ctools_plugin_directory($owner, $plugin) {
   if (($owner == 'motionsplan_exercise_pdf') && ($plugin == 'layouts')) {
     return 'plugins/' . $plugin;
@@ -101,15 +101,15 @@ function motionsplan_exercise_pdf_ctools_plugin_directory($owner, $plugin) {
 }
 
 /**
-* Fetch metadata on a specific layout plugin.
-*
-* @param string $layout
-* Name of a panel layout. If the layout name contains a ':' this
-* indicates that we need to separate the sublayout out and
-* load it individually.
-*
-* @return array
-* An array with information about the requested panel layout.
+ * Fetch metadata on a specific layout plugin.
+ *
+ * @param string $layout
+ *   Name of a panel layout. If the layout name contains a ':' this
+ *   indicates that we need to separate the sublayout out and
+ *   load it individually.
+ *
+ * @return array
+ *   An array with information about the requested panel layout.
 */
 function motionsplan_exercise_pdf_get_layout($layout) {
   ctools_include('plugins');
@@ -117,29 +117,29 @@ function motionsplan_exercise_pdf_get_layout($layout) {
 }
 
 /**
-* Fetch metadata for all layout plugins.
-*
-* @param
-* string $id Optional plugin ID
-*
-* @return array
-* An array of arrays with information about all available layouts.
-*/
+ * Fetch metadata for all layout plugins.
+ *
+ * @param
+ *   string $id Optional plugin ID
+ *
+ * @return array
+ *   An array of arrays with information about all available layouts.
+ */
 function motionsplan_exercise_pdf_get_layouts($id = NULL) {
   ctools_include('plugins');
   return ctools_get_plugins('motionsplan_exercise_pdf', 'layouts', $id);
 }
 
 /**
-* Returns pdf layouts plugin.
-*/
+ * Returns pdf layouts plugin.
+ */
 function motionsplan_exercise_pdf_layouts() {
   return variable_get('motionsplan_exercise_pdf_layout', 'landscape');
 }
 
 /**
-* Implements hook_admin_settings().
-*/
+ * Implements hook_admin_settings().
+ */
 function motionsplan_exercise_pdf_admin_settings() {
   global $base_url;
   $options = array();
@@ -180,15 +180,15 @@ function motionsplan_exercise_pdf_admin_settings() {
 }
 
 /**
-* Implements hook_admin_settings_validate().
-*/
+ * Implements hook_admin_settings_validate().
+ */
 function motionsplan_exercise_pdf_admin_settings_validate($form, &$form_state) {
   return TRUE;
 }
 
 /**
-* Implements hook_admin_settings_submit().
-*/
+ * Implements hook_admin_settings_submit().
+ */
 function motionsplan_exercise_pdf_admin_settings_submit($form, &$form_state) {
   variable_set('motionsplan_exercise_pdf_layout', $form_state['values']['layout']);
   variable_set('motionsplan_exercise_pdf_link', $form_state['values']['link']);
@@ -233,7 +233,7 @@ function motionsplan_exercise_pdf_admin_settings_submit($form, &$form_state) {
  */
 function article_pdf($node) {
   global $base_url;
-  module_load_include('inc', 'motionsplan_exercise_pdf', 'motionsplan_exercise_pdf.pdf');
+  ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = $node->title;
   $pdf = new ArticlePdf($node);
@@ -310,7 +310,7 @@ function exercise_pdf_advanced($node) {
  */
 function exerciseprogram_print_compact_pdf_of_exercises() {
   global $base_path;
-  module_load_include('inc', 'motionsplan_exercise_pdf', 'motionsplan_exercise_pdf.pdf');
+  ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $nids = exerciseprogram_get_nids(arg(2));
   if (sizeof($nids)<=0) {
@@ -334,7 +334,7 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
  */
 function exerciseprogram_print_compact_pdf() {
   global $base_path;
-  module_load_include('inc', 'motionsplan_exercise_pdf', 'motionsplan_exercise_pdf.pdf');
+  ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $nids = exerciseprogram_get_nids(arg(2));
   if (sizeof($nids) <= 0) {
