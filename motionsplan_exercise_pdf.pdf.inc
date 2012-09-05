@@ -40,16 +40,16 @@ class ExerciseProgramCompactPdf extends FPDF {
     //Issue a page break first if needed
     $this->CheckPageBreak($h);
     //Draw the cells of the row
-    for($i=0;$i<count($data);$i++) {
+    for($i = 0; $i < count($data); $i++) {
       $w=$this->widths[$i];
       $a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
       //Save the current position
       $x=$this->GetX();
       $y=$this->GetY();
       //Draw the border
-      $this->Rect($x,$y,$w,$h);
+      $this->Rect($x, $y, $w, $h);
       //Print the text
-      $this->MultiCell($w,5,$data[$i],0,$a);
+      $this->MultiCell($w, 5, $data[$i], 0, $a);
 
       $calc_x = $x + 1;
       $calc_y = $this->GetY();

@@ -54,14 +54,13 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
       $spacing = 3;
       $count = 0;
       $picture_rows = 1;
-      $presetname = 'exercisePdfAdvanced';
-      $preset = imagecache_preset_by_name($presetname);
+      
       $pr_row = 0;
       foreach ($node->field_exercise_images as $image) {
-        $src = $image["filepath"];
-        $dst = imagecache_create_path($presetname, $src);
-        if (file_exists($dst) || imagecache_build_derivative($preset['actions'], $src, $dst)) {
-          $file = $dst;
+        $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $image['uri']));
+        
+        if (file_exists($picture_filename)) {
+          $file = $picture_filename;
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
             $orientation = 'portrait';
@@ -91,7 +90,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
             $pr_row = 0;
           }
           
-          $this->Image($file,$x,$y,$pic_width,0,'');
+          $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
           $pr_row++;          
         }
