@@ -8,6 +8,7 @@
  * Implementation of hook_menu()
  */ 
 function motionsplan_exercise_pdf_menu() {
+  /*
   $items['node/%node/pdf'] = array(
     'title' => 'PDF',
     'page callback' => 'exercise_pdf_landscape',
@@ -23,7 +24,8 @@ function motionsplan_exercise_pdf_menu() {
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'exercise_pdf_access',
     'access arguments' => array(1)
-  ); 
+  );
+  */ 
   $items['node/%node/pdf3'] = array(
     'title' => 'PDF3',
     'page callback' => 'exercise_pdf_advanced',
@@ -32,6 +34,7 @@ function motionsplan_exercise_pdf_menu() {
     'access callback' => 'exercise_pdf_access',
     'access arguments' => array(1)
   );
+  /*
   $items['node/%node/print'] = array(
     'title' => 'PDF',
     'page callback' => 'article_pdf',
@@ -53,7 +56,8 @@ function motionsplan_exercise_pdf_menu() {
     'page arguments' => array(2),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
-  );        
+  );
+  */        
   return $items;
 }
 
