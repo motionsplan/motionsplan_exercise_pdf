@@ -233,6 +233,7 @@ function motionsplan_exercise_pdf_admin_settings_submit($form, &$form_state) {
  */
 function article_pdf($node) {
   global $base_url;
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = $node->title;
@@ -253,6 +254,7 @@ function article_pdf($node) {
  */
 function exercise_pdf_portrait($node) {
   global $base_url;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layout/portrait');
 
   $title = utf8_decode($node->title);
@@ -273,6 +275,7 @@ function exercise_pdf_portrait($node) {
  */
 function exercise_pdf_landscape($node) {
   global $base_url;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layout/landscape');
 
   $title = utf8_decode($node->title);
@@ -293,7 +296,7 @@ function exercise_pdf_landscape($node) {
  */
 function exercise_pdf_advanced($node) {
   global $base_url;
-
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait_extended');
 
   $title = utf8_decode($node->title);
@@ -310,6 +313,7 @@ function exercise_pdf_advanced($node) {
  */
 function exerciseprogram_print_compact_pdf_of_exercises() {
   global $base_path;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $nids = exerciseprogram_get_nids(arg(2));
@@ -334,6 +338,7 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
  */
 function exerciseprogram_print_compact_pdf() {
   global $base_path;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $nids = exerciseprogram_get_nids(arg(2));

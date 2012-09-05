@@ -4,3 +4,4 @@ package = Motionsplan
 core = 7.x
 
 dependencies[] = ctools
+dependencies[] = libraries
