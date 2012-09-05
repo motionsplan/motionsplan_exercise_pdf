@@ -25,9 +25,11 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $description = $node->field_exercise_guide[LANGUAGE_NONE][0]['value'];
 
     $keywords = array();
+    /*
     foreach ($node->taxonomy as $taxonomy) {
       $keywords[] = $taxonomy->name;
     }
+    */
 
     $url = $base_url. '/node/' . $node->nid;
   
@@ -57,7 +59,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
       
       $pr_row = 0;
       foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
-        $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $image['uri']));
+        $picture_filename = drupal_realpath(image_style_path('exercise_extended_pdf', $image['uri']));
         
         if (file_exists($picture_filename)) {
           $file = $picture_filename;
