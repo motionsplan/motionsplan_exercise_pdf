@@ -107,9 +107,9 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $this->setX(70);
     $this->MultiCell(0, 6, str_replace("\n",' ',$description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
 
-    $this->Image(dirname(__FILE__) . '/../../../mp-logo.png',8,270,50,0,'', 'http://motionsplan.dk/');
+    $this->Image(dirname(__FILE__) . '/../../../mp-logo.png', 8, 270, 50, 0, '', 'http://motionsplan.dk/');
     //$this->Image(dirname(__FILE__) . '/vih_logo.jpg',80,268,45,0,'', 'http://motionsplan.dk/');    
-    $this->Image(dirname(__FILE__) . '/cc-by-sa_340x340.png',190,3,17,0,'');
+    $this->Image(dirname(__FILE__) . '/../../../cc-by-sa_340x340.png', 190, 3, 17, 0, '');
 
     $this->SetFont('Helvetica', null, 8);
     $this->setY(280);
