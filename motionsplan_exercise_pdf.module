@@ -50,7 +50,7 @@ function motionsplan_exercise_pdf_menu() {
     'page arguments' => array(1),
     'access callback' => 'exerciseprogram_pdf_access',
     'access arguments' => array(1),
-    'type' => MENU_CALLBACK,
+    'type' => MENU_LOCAL_TASK,
   );
   /*  
   $items['exerciseprogram/print_compact/%/exercisespdf'] = array(
@@ -252,6 +252,7 @@ function motionsplan_exercise_pdf_admin_settings_submit($form, &$form_state) {
 function article_pdf($node) {
   global $base_url;
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';    
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = $node->title;
@@ -357,10 +358,11 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
 function exerciseprogram_print_compact_pdf($node) {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('fpdf') . '/tcpdf.php';  
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = utf8_decode($node->title);
-  $description = ''; // HER NÅEDE JEG TIL LIGE NU
+  $description = $node->body[LANGUAGE_NONE][0]['value'];
 
   $pdf = new ExerciseProgramCompactPdf();
   $pdf->SetTitle($title);
@@ -384,32 +386,27 @@ function exerciseprogram_print_compact_pdf($node) {
   $pdf->Row(array(utf8_decode('Øvelse'), utf8_decode('Beskrivelse'), utf8_decode('Kommentar')));
   $pdf->SetFont('Helvetica', null, 10);
 
-  $presetname = 'exercisePictureCompact';
-  $preset = imagecache_preset_by_name($presetname);
-
-  foreach($nids as $no => $eid) {
-    $e = node_load($eid);
+  foreach ($node->field_program_exercises[LANGUAGE_NONE] as $entity) {
+    $e = node_load($entity['target_id']);
 
 	$imgs = array();
-	foreach($e->field_exercise_images as $img) {
-      if (empty($img['filepath'])) { 
+	foreach ($e->field_exercise_images[LANGUAGE_NONE] as $img) {
+      $picture_filename = drupal_realpath(image_style_path('exercise_extended_pdf', $image['uri']));
+      
+      if (!file_exists($picture_filename)) { 
         continue; 
       }
-      $src = $img["filepath"];
-      $dst = imagecache_create_path($presetname, $src);
-      if (file_exists($dst) || imagecache_build_derivative($preset['actions'], $src, $dst)) {
-        $imgs[] = $dst;
-      }
+      $imgs[] = $picture_filename;
     }
 	if (sizeof($imgs) > 3) {
       $tmp_imgs = array();
       $tmp_imgs[] = $imgs[0];
-      $tmp_imgs[] = $imgs[floor(sizeof($imgs)/2)];
-      $tmp_imgs[] = $imgs[sizeof($imgs)-1];
+      $tmp_imgs[] = $imgs[floor(sizeof($imgs) / 2)];
+      $tmp_imgs[] = $imgs[sizeof($imgs) - 1];
       $imgs = $tmp_imgs;
     }
 
-    $pdf->Row(array(utf8_decode($e->title), utf8_decode($e->field_exercise_intro[0]['value']), ''), $imgs); 
+    $pdf->Row(array(utf8_decode($e->title), utf8_decode($e->field_exercise_intro[LANGUAGE_NONE][0]['value']), ''), $imgs); 
   }
 
   $pdf->Output($title . '.pdf', 'I');
