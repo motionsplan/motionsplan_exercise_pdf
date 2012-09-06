@@ -42,14 +42,17 @@ function motionsplan_exercise_pdf_menu() {
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'article_pdf_access',
     'access arguments' => array(1)
-  );            
-  $items['exerciseprogram/print_compact/%/pdf'] = array(
+  );
+  */          
+  $items['node/%node/pdf4'] = array(
     'title' => t('PDF'),
     'page callback' => 'exerciseprogram_print_compact_pdf',
-    'page arguments' => array(2),
-    'access callback' => TRUE,
+    'page arguments' => array(1),
+    'access callback' => 'exerciseprogram_pdf_access',
+    'access arguments' => array(1)
     'type' => MENU_CALLBACK,
-  );  
+  );
+  /*  
   $items['exerciseprogram/print_compact/%/exercisespdf'] = array(
     'title' => t('Exercise PDF cards'),
     'page callback' => 'exerciseprogram_print_compact_pdf_of_exercises',
@@ -65,20 +68,31 @@ function motionsplan_exercise_pdf_menu() {
  * Checks for access for exercises
  */
 function exercise_pdf_access($node) {
-    if ($node->type != 'exercise') {
-        return FALSE;
-    }
-    return TRUE;
+  if ($node->type != 'exercise') {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+
+/**
+ * Checks for access for exercise programs
+ */
+function exerciseprogram_pdf_access($node) {
+  if ($node->type != 'trainingprogram') {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**
  * Checks for access for articles
  */
 function article_pdf_access($node) {
-    if ($node->type != 'story') {
-        return FALSE;
-    }
-    return TRUE;
+  if ($node->type != 'story') {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**
@@ -340,21 +354,13 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
 /**
  * Outputs pdf of a compact training program.
  */
-function exerciseprogram_print_compact_pdf() {
+function exerciseprogram_print_compact_pdf($node) {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
-  $nids = exerciseprogram_get_nids(arg(2));
-  if (sizeof($nids) <= 0) {
-    return '<strong>Du skal tilføje øvelser for at kunne udskrive</strong>';
-  }
-    
-  $sql = "SELECT name, description FROM {exercise_program} WHERE pid = %d";
-  $r = db_fetch_array(db_query($sql,arg(2)));
-
-  $title = utf8_decode($r['name']);
-  $description = utf8_decode($r['description']);
+  $title = utf8_decode($node->title);
+  $description = ''; // HER NÅEDE JEG TIL LIGE NU
 
   $pdf = new ExerciseProgramCompactPdf();
   $pdf->SetTitle($title);
