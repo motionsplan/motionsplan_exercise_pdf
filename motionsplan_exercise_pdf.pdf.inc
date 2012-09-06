@@ -24,37 +24,37 @@ class ExerciseProgramCompactPdf extends FPDF {
   }
 
   function Row($data, $pics = array()) {
-    //Calculate the height of the row
+    // Calculate the height of the row.
     $pic_width = 15;
     $pic_height = 15;
     $nb=0;
-    for($i=0;$i<count($data);$i++) {
-      $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
+    for ($i = 0; $i < count($data); $i++) {
+      $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
     }
-    $h=5*$nb;
+    $h = 5 * $nb;
 
     if ($first_col = $this->NbLines($this->widths[$i], $data[0]) * 5 + $pic_height >= $h AND !empty($pics)) {
       $h = $first_col * 5 + $pic_height + 6;
     }
 
-    //Issue a page break first if needed
+    // Issue a page break first if needed.
     $this->CheckPageBreak($h);
-    //Draw the cells of the row
-    for($i = 0; $i < count($data); $i++) {
+    // Draw the cells of the row.
+    for ($i = 0; $i < count($data); $i++) {
       $w=$this->widths[$i];
       $a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
-      //Save the current position
-      $x=$this->GetX();
-      $y=$this->GetY();
-      //Draw the border
+      // Save the current position.
+      $x = $this->GetX();
+      $y = $this->GetY();
+      // Draw the border.
       $this->Rect($x, $y, $w, $h);
-      //Print the text
+      // Print the text.
       $this->MultiCell($w, 5, $data[$i], 0, $a);
 
       $calc_x = $x + 1;
       $calc_y = $this->GetY();
       if (!empty($pics)) {
-        if ($i==0) {
+        if ($i == 0) {
           foreach ($pics as $pic) {
             if (file_exists($pic)) {
               $this->Image($pic, $calc_x, $calc_y, $pic_width, $pic_height);
@@ -63,11 +63,11 @@ class ExerciseProgramCompactPdf extends FPDF {
           }  
         }
       }
-      //Put the position to the right of the cell
+      // Put the position to the right of the cell.
       $this->SetXY($x+$w,$y);
     }
 
-    //Go to the next line
+    // Go to the next line.
     $this->Ln($h);
   }
 
