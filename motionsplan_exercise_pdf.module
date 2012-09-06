@@ -358,7 +358,7 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
 function exerciseprogram_print_compact_pdf($node) {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
-  require_once libraries_get_path('fpdf') . '/tcpdf.php';  
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';  
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = utf8_decode($node->title);
