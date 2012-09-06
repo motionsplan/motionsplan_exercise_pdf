@@ -49,7 +49,7 @@ function motionsplan_exercise_pdf_menu() {
     'page callback' => 'exerciseprogram_print_compact_pdf',
     'page arguments' => array(1),
     'access callback' => 'exerciseprogram_pdf_access',
-    'access arguments' => array(1)
+    'access arguments' => array(1),
     'type' => MENU_CALLBACK,
   );
   /*  
