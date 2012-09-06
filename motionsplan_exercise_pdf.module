@@ -362,7 +362,7 @@ function exerciseprogram_print_compact_pdf($node) {
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = utf8_decode($node->title);
-  $description = $node->body[LANGUAGE_NONE][0]['value'];
+  $description = utf8_decode($node->body[LANGUAGE_NONE][0]['value']);
 
   $pdf = new ExerciseProgramCompactPdf();
   $pdf->SetTitle($title);
