@@ -386,14 +386,16 @@ function exerciseprogram_print_compact_pdf($node) {
   $pdf->Row(array(utf8_decode('Øvelse'), utf8_decode('Beskrivelse'), utf8_decode('Kommentar')));
   $pdf->SetFont('Helvetica', null, 10);
 
+  $style = 'exercise_extended_pdf';
+  $style_array = image_style_load($style);
+
   foreach ($node->field_program_exercises[LANGUAGE_NONE] as $entity) {
     $e = node_load($entity['target_id']);
 
     $imgs = array();
-    $style = 'exercise_extended_pdf';
     foreach ($e->field_exercise_images[LANGUAGE_NONE] as $image) {
       $dst = image_style_path($style, $image['uri']);
-      if (file_exists($dst) || image_style_create_derivative($style, $image['uri'], $dst)) {
+      if (file_exists($dst) || image_style_create_derivative($style_array, $image['uri'], $dst)) {
         $picture_filename = drupal_realpath(image_style_path($style, $image['uri']));
         if (is_dir($picture_filename)) {
           continue;
