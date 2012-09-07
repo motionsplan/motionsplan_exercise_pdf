@@ -389,14 +389,14 @@ function exerciseprogram_print_compact_pdf($node) {
   foreach ($node->field_program_exercises[LANGUAGE_NONE] as $entity) {
     $e = node_load($entity['target_id']);
 
-	$imgs = array();
-	foreach ($e->field_exercise_images[LANGUAGE_NONE] as $img) {
-      $picture_filename = drupal_realpath(image_style_path('exercise_extended_pdf', $image['uri']));
-      
-      if (!file_exists($picture_filename) OR is_dir($picture_filename)) { 
-        continue; 
+    $imgs = array();
+    $style = 'exercise_extended_pdf';
+    foreach ($e->field_exercise_images[LANGUAGE_NONE] as $img) {
+      $dst = image_style_path($style, $image['uri']);
+      if (file_exists($dst) || image_style_create_derivative($style, $image['uri'], $dst)) { 
+        $picture_filename = drupal_realpath(image_style_path($style, $image['uri']));
+        $imgs[] = $picture_filename;
       }
-      $imgs[] = $picture_filename;
     }
 	if (sizeof($imgs) > 3) {
       $tmp_imgs = array();
