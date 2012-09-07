@@ -3,18 +3,15 @@
  * @file
  * Layout for advanced A4
  */
-class ExerciseAdvancedPdfPortrait extends TCPDF
-{
-  function __construct($disccache = FALSE)
-  {
+class ExerciseAdvancedPdfPortrait extends TCPDF {
+  function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
     $this->SetMargins(0, 0, 0);  
     $this->AliasNbPages();    
   }
 
-  function AddPage($node)
-  {
+  function AddPage($node) {
     global $base_url;
     parent::AddPage();
     $this->SetMargins(0, 0, 0);  
@@ -49,6 +46,9 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
     $this->SetFont('Helvetica', null, 10);
     $this->MultiCell(40, 5, implode($keywords, "\n"), 0, 'C');
 
+    $style = 'exercise_extended_pdf';
+    $style_array = image_style_load($style);
+
     if (!empty($node->field_exercise_images[LANGUAGE_NONE][0])) {
       $x = 10;
       $y = 25;
@@ -59,9 +59,9 @@ class ExerciseAdvancedPdfPortrait extends TCPDF
       
       $pr_row = 0;
       foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
-        $picture_filename = drupal_realpath(image_style_path('exercise_extended_pdf', $image['uri']));
+        $dst = image_style_path($style, $image['uri']);
         
-        if (file_exists($picture_filename)) {
+        if (file_exists($dst) || image_style_create_derivative($style_array, $image['uri'], $dst)) {
           $file = $picture_filename;
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
