@@ -1,8 +1,8 @@
 <?php
 /**
-* @file
-* Code for the PDF for the exercises and exercise programs
-*/
+ * @file
+ * Code for the PDF for the exercises and exercise programs
+ */
 
 /**
  * Implementation of hook_menu()
