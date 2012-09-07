@@ -62,7 +62,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
         $dst = image_style_path($style, $image['uri']);
         
         if (file_exists($dst) || image_style_create_derivative($style_array, $image['uri'], $dst)) {
-          $file = $picture_filename;
+          $file = image_style_path($style, $image['uri']);
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
             $orientation = 'portrait';
