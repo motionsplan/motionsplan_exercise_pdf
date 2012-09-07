@@ -373,7 +373,7 @@ function exerciseprogram_print_compact_pdf($node) {
   $pdf->AddPage();
   $pdf->SetFont('Helvetica', 'B', 20);
   $pdf->Cell(0, 10, $title, null, 2, 'L', FALSE);
-  $pdf->Image(dirname(__FILE__) . '/mp-logo.png',150,8,50,0,'', 'http://motionsplan.dk/');
+  $pdf->Image(dirname(__FILE__) . '/mp-logo.png', 150, 8, 50, 0, '', 'http://motionsplan.dk/');
   $pdf->setTextColor(0, 0, 0);
 
   $pdf->SetFont('Helvetica', null, 10);
@@ -381,7 +381,7 @@ function exerciseprogram_print_compact_pdf($node) {
   $pdf->SetY($pdf->GetY()+2);
 
   // Table starts.
-  $pdf->SetWidths(array(50,70,70));
+  $pdf->SetWidths(array(50, 70, 70));
   $pdf->SetFont('Helvetica', 'B', 10);
   $pdf->Row(array(utf8_decode('Øvelse'), utf8_decode('Beskrivelse'), utf8_decode('Kommentar')));
   $pdf->SetFont('Helvetica', null, 10);
@@ -391,7 +391,7 @@ function exerciseprogram_print_compact_pdf($node) {
 
     $imgs = array();
     $style = 'exercise_extended_pdf';
-    foreach ($e->field_exercise_images[LANGUAGE_NONE] as $img) {
+    foreach ($e->field_exercise_images[LANGUAGE_NONE] as $image) {
       $dst = image_style_path($style, $image['uri']);
       if (file_exists($dst) || image_style_create_derivative($style, $image['uri'], $dst)) {
         $picture_filename = drupal_realpath(image_style_path($style, $image['uri']));
@@ -401,7 +401,7 @@ function exerciseprogram_print_compact_pdf($node) {
         $imgs[] = $picture_filename;
       }
     }
-	if (sizeof($imgs) > 3) {
+    if (sizeof($imgs) > 3) {
       $tmp_imgs = array();
       $tmp_imgs[] = $imgs[0];
       $tmp_imgs[] = $imgs[floor(sizeof($imgs) / 2)];
