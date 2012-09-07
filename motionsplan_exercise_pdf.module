@@ -393,7 +393,7 @@ function exerciseprogram_print_compact_pdf($node) {
     $style = 'exercise_extended_pdf';
     foreach ($e->field_exercise_images[LANGUAGE_NONE] as $img) {
       $dst = image_style_path($style, $image['uri']);
-      if (file_exists($dst) || image_style_create_derivative($style, $image['uri'], $dst)) { 
+      if (file_exists($dst) AND !is_dir($dst) || image_style_create_derivative($style, $image['uri'], $dst)) { 
         $picture_filename = drupal_realpath(image_style_path($style, $image['uri']));
         $imgs[] = $picture_filename;
       }
