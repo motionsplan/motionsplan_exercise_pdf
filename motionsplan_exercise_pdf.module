@@ -386,7 +386,7 @@ function exerciseprogram_print_compact_pdf($node) {
   $pdf->Row(array(utf8_decode('Øvelse'), utf8_decode('Beskrivelse'), utf8_decode('Kommentar')));
   $pdf->SetFont('Helvetica', null, 10);
 
-  $style = 'exercise_extended_pdf';
+  $style = 'square_thumbnail';
   $style_array = image_style_load($style);
 
   foreach ($node->field_program_exercises[LANGUAGE_NONE] as $entity) {
