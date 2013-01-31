@@ -82,8 +82,9 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
               break;
             }
           }
+
           $width += $pic_width + $spacing;
-    
+
           if ($pr_row >= $no_pr_row) {
             $y += $new_line;
             $x = 10;
@@ -94,6 +95,11 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
           
           $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
+
+          if ($no_pr_row == 1) {
+            $y += $new_line;
+            $x = 10;
+          }
           $pr_row++;          
         }
       }
