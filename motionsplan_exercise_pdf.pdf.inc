@@ -161,21 +161,22 @@ class ArticlePdf extends TCPDF {
   }
   
   function Footer() {
-    $this->Image(dirname(__FILE__) . '/mp-logo.png',8,275,50,0,'', 'http://motionsplan.dk/');
-    $this->Image(dirname(__FILE__) . '/vih_logo.jpg',155,270,45,0,'', 'http://vih.dk/');      
+    $this->Image(dirname(__FILE__) . '/mp-logo.png', 8, 275, 50, 0, '', 'http://motionsplan.dk/');
+    $this->Image(dirname(__FILE__) . '/vih_logo.jpg', 155, 270, 45, 0, '', 'http://vih.dk/');      
     $this->SetFont('Helvetica', null, 8);
     $this->setY(285);
     $this->setX(6);
     $this->MultiCell(50, 8, $this->url, 0, 'C');
     $this->SetY(-15);
     $this->SetFont('Helvetica', null, 12);    
-    $this->Cell(0,10, $this->PageNo().'/{nb}',0,0,'C');
+    $this->Cell(0,10, $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
   }
 
   function AddContent() {
     parent::AddPage();
     $title = '  ' . $this->node->title;
-    $body = check_markup($this->node->body, $this->node->format, FALSE);
+    $body_field = field_get_items('node', $this->node, 'body');
+    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'wysiwyg');
 
     $keywords = array();
     if (!empty($this->node->taxonomy)) {
@@ -184,13 +185,12 @@ class ArticlePdf extends TCPDF {
       }
     }
 
-    if (!empty($this->node->field_article_image[0]['filepath'])) {
-      $presetname = 'SlideshowPicture';
-      $preset = imagecache_preset_by_name($presetname);
-      $src = $this->node->field_article_image[0]['filepath'];
-      $dst = imagecache_create_path($presetname, $src);
-      if (file_exists($dst) || imagecache_build_derivative($preset['actions'], $src, $dst)) {
-        $this->Image($dst,10,10,190,0,'', 'http://motionsplan.dk/');
+    if (!empty($this->node->field_article_image[LANGUAGE_NONE][0])) {
+      $presetname = 'rotating_banner_slideshow';
+      $style = image_style_load($presetname);
+      $dst = image_style_path($style, $this->node->field_article_image[LANGUAGE_NONE][0]['uri']);
+      if (file_exists($dst) || image_style_create_derivative($style, $this->node->field_article_image[LANGUAGE_NONE][0]['uri'], $dst)) {
+        $this->Image($dst, 10, 10, 190, 0, '', 'http://motionsplan.dk/');
       }    
     }
     $this->Image(dirname(__FILE__) . '/cc-by-sa_340x340.png', 180, 13, 17, 0, '');
@@ -206,5 +206,20 @@ class ArticlePdf extends TCPDF {
     $this->SetTextColor(0, 0, 0);
     $this->writeHTML($body, TRUE, FALSE, TRUE, FALSE, '');    
   }
+
+  protected function clearJavascript($s) {
+     $do = true;
+     while ($do) {
+       $start = stripos($s, '<script');
+       $stop = stripos($s, '</script>');
+       if ((is_numeric($start)) && (is_numeric($stop))) {
+         $s = substr($s, 0, $start) . substr($s, ($stop + strlen('</script>')));
+       } 
+       else {
+         $do = false;
+       }
+     }
+     return trim($s);
+   }
 }
 

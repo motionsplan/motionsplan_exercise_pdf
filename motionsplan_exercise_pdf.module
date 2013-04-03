@@ -34,7 +34,6 @@ function motionsplan_exercise_pdf_menu() {
     'access callback' => 'exercise_pdf_access',
     'access arguments' => array(1)
   );
-  /*
   $items['node/%node/print'] = array(
     'title' => 'PDF',
     'page callback' => 'article_pdf',
@@ -42,8 +41,7 @@ function motionsplan_exercise_pdf_menu() {
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'article_pdf_access',
     'access arguments' => array(1)
-  );
-  */          
+  );          
   $items['node/%node/pdf4'] = array(
     'title' => t('PDF'),
     'page callback' => 'exerciseprogram_print_compact_pdf',
