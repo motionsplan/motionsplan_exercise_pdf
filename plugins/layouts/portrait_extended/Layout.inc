@@ -76,7 +76,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
           else {
             $orientation = 'landscape';
             $pic_width = 55;
-            $new_line = 40;
+            $new_line = 20;
             $no_pr_row = 1;            
             if ($count > 5) {
               break;
