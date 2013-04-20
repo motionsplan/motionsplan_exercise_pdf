@@ -18,7 +18,7 @@ class ExercisePdfPortrait extends FPDF
     $this->setX(0);
     $this->setY(0);    
     $title = "  " . utf8_decode($node->title);
-    $description = utf8_decode(strip_tags($node->field_exercise_intro[0]['value']));
+    $description = utf8_decode(strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']));
     $keywords = array();
     foreach ($node->taxonomy as $taxonomy) {
       $keywords[] = $taxonomy->name;
@@ -48,37 +48,40 @@ class ExercisePdfPortrait extends FPDF
 
     $this->setY(60);
 
-    if (!empty($node->field_exercise_images[0])) {
+    if (!empty($node->field_exercise_images[LANGUAGE_NONE][0])) {
       $x = 10;
       $y = 60;
       $width = 0;
       $spacing = 5;
       $count = 0;
       $picture_rows = 1;
-      $presetname = 'exercisePdf';
-      $preset = imagecache_preset_by_name($presetname);
-      foreach ($node->field_exercise_images as $image) {
-        $src = $image["filepath"];
-        $dst = imagecache_create_path($presetname, $src);
-        $count++;        
-        if (file_exists($dst) || imagecache_build_derivative($preset['actions'], $src, $dst)) {
-          $file = $dst;
+      $style = 'exercise_extended_pdf';
+      $style_array = image_style_load($style);
+      $no_of_pics = count($node->field_exercise_images[LANGUAGE_NONE]);
+      foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
+        $dst = image_style_path($style, $image['uri']);
+        if (file_exists($dst) || image_style_create_derivative($style_array, $image['uri'], $dst)) {
+          $file = image_style_path($style, $image['uri']);
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
             $orientation = 'portrait';
-            $pic_width = 55;
-            $new_line = 80;
-            if ($count > 6) {
-              break;
+            if ($no_of_pics <= 6) {
+              $pic_width = 55;
+              $new_line = 80;
+            }
+            elseif ($no_of_pics > 6 && $no_of_pics < 9) {
+              $pic_width = 40;
+              $new_line = 60;
+            }
+            elseif ($no_of_pics > 8) {
+              $pic_width = 30;
+              $new_line = 50;
             }
           }
           else {
             $orientation = 'landscape';
             $pic_width = 80;
             $new_line = 68;
-            if ($count > 4) {
-              break;
-            }
           }
           $width += $pic_width + $spacing;
     
@@ -89,9 +92,8 @@ class ExercisePdfPortrait extends FPDF
             $width = 0;
           }
           
-          $this->Image($file,$x,$y,$pic_width,0,'');
+          $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
-
         }
       }
       if ($orientation == 'portrait') {
@@ -117,35 +119,41 @@ class ExercisePdfPortrait extends FPDF
 
     $this->MultiCell(0, 8, $description, 0);
 
-    $this->Image(dirname(__FILE__) . '/mp-logo.png',8,270,50,0,'', 'http://motionsplan.dk/');
-    $this->Image(dirname(__FILE__) . '/vih_logo.jpg',80,268,45,0,'', 'http://motionsplan.dk/');    
-    $this->Image(dirname(__FILE__) . '/cc-by-sa_340x340.png',190,3,17,0,'');
+    $this->Image(dirname(__FILE__) . '/../../../mp-logo.png', 8, 270, 50, 0, '', 'http://motionsplan.dk/');
+    $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg', 80, 268, 45, 0, '', 'http://motionsplan.dk/');    
+    $this->Image(dirname(__FILE__) . '/../../../cc-by-sa_340x340.png', 190, 3, 17, 0, '');
 
     $this->SetFont('Helvetica', null, 8);
     $this->setY(280);
     $this->setX(6);
     $this->MultiCell(50, 8, $url, 0, 'C');
 
-    $image_url = "http://chart.apis.google.com/chart?cht=qr&chs=100x100&chl=" . $url;
-  
-    $ch = curl_init();
-    $timeout = 0;
-    curl_setopt ($ch, CURLOPT_URL, $image_url);
-    curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-
-    // Getting binary data
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-
-    $image = curl_exec($ch);
-
-    curl_close($ch);
-
-    $f = fopen(getcwd() . '/' . file_directory_path() . '/barcodes/'. md5(request_uri()) . '.png', 'w');
-    fwrite($f, $image);
-    fclose($f);
-
-    $this->Image(getcwd() . '/' . file_directory_path() . '/barcodes/' . md5(request_uri()) . '.png', 160, 245, 45, 0, '');
+    $qr_file = $this->getBarcodePath($url, 200, 200);
+    if ($qr_file !== false && file_exists($qr_file)) {
+      $this->Image($qr_file,  160, 245, 45, 0, '');
+    }
   }
+
+  /**
+   * Gets barcode file path
+   *
+   * @param string  $url url
+   * @param integer $height Height
+   * @param integer $width Width
+   *
+   * @return string or false
+   */
+  protected function getBarcodePath($url, $height, $width) {
+    $chart = array(
+      '#chart_id' => 'exercise_chart',
+      '#type' => CHART_TYPE_QR,
+      '#size' => chart_size(200, 200) 
+    );
+        
+    $chart['#data'][] = '';
+    $chart['#labels'][] = $url;
+        
+    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
+  } 
 }
 
