@@ -20,37 +20,39 @@ class ExercisePdfPortrait extends FPDF
     $title = "  " . utf8_decode($node->title);
     $description = utf8_decode(strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']));
     $keywords = array();
+    /*
     foreach ($node->taxonomy as $taxonomy) {
       $keywords[] = $taxonomy->name;
     }
+    */
 
     $url = $base_url. '/node/' . $node->nid;
-  
     $title_size = 30;
 
     $this->SetFont('Helvetica', 'B', $title_size);
 
     $title_width = $this->GetStringWidth($title);
-  
+
     if ($title_width > 200) {
       $title_size = 25;
     }
-  
+
     $this->SetFont('Helvetica', 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
-    $this->Cell(0, 50, $title, null, 2, 'L', TRUE);
-  
+    $this->Cell(0, 30, $title, null, 2, 'L', TRUE);
     $this->SetLeftMargin(10);
     $this->SetRightMargin(10);
+    /*
     $this->SetY(35);
     $this->SetFont('Helvetica', null, 10);
     $this->MultiCell(0, 5, utf8_decode(implode($keywords, ", ")), 0, 'L');
-
-    $this->setY(60);
+    */
+    $this->setY(40);
 
     if (!empty($node->field_exercise_images[LANGUAGE_NONE][0])) {
       $x = 10;
-      $y = 60;
+      $y = $this->GetY();
+      $new_y = $y;
       $width = 0;
       $spacing = 5;
       $count = 0;
@@ -65,23 +67,41 @@ class ExercisePdfPortrait extends FPDF
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
             $orientation = 'portrait';
-            if ($no_of_pics <= 6) {
-              $pic_width = 55;
-              $new_line = 80;
+            if ($no_of_pics <= 2) {
+              $pic_width = 93;
+              $new_line = 145;
             }
-            elseif ($no_of_pics > 6 && $no_of_pics < 9) {
-              $pic_width = 40;
-              $new_line = 60;
+            elseif ($no_of_pics <= 3) {
+              $pic_width = 60;
+              $new_line = 95;
             }
-            elseif ($no_of_pics > 8) {
-              $pic_width = 30;
-              $new_line = 50;
+            elseif ($no_of_pics <= 8) {
+              $pic_width = 45;
+              $new_line = 72;
+            }
+            else {
+              $pic_width = 34;
+              $new_line = 55;
             }
           }
           else {
             $orientation = 'landscape';
-            $pic_width = 80;
-            $new_line = 68;
+            if ($no_of_pics == 1) {
+              $pic_width = 190;
+              $new_line = 130;
+            }
+            elseif ($no_of_pics <= 4) {
+              $pic_width = 92;
+              $new_line = 66;
+            }
+            elseif ($no_of_pics <= 9) {
+              $pic_width = 60;
+              $new_line = 44;
+            }
+            else {
+              $pic_width = 40;
+              $new_line = 34;
+            }
           }
           $width += $pic_width + $spacing;
     
@@ -90,28 +110,14 @@ class ExercisePdfPortrait extends FPDF
             $x = 10;
             $picture_rows++;
             $width = 0;
+            $new_y += $new_line;
           }
           
           $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
         }
       }
-      if ($orientation == 'portrait') {
-        if ($picture_rows == 1) {
-          $this->setY(150);
-        }
-        else {
-          $this->setY(230);
-        }
-      }
-      else {
-        if ($picture_rows == 1) {
-          $this->setY(125);
-        }
-        else {
-          $this->setY(195);
-        }
-      }      
+      $this->setY($new_y + $new_line);
     }
   
     $this->SetFont('Helvetica', null, 17);

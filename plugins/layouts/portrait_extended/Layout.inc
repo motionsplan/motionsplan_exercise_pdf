@@ -56,21 +56,33 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
       $spacing = 3;
       $count = 0;
       $picture_rows = 1;
-      
       $pr_row = 0;
+      $no_of_pics = count($node->field_exercise_images[LANGUAGE_NONE]);
       foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
         $dst = image_style_path($style, $image['uri']);
-        
+
         if (file_exists($dst) || image_style_create_derivative($style_array, $image['uri'], $dst)) {
           $file = image_style_path($style, $image['uri']);
           $size = getimagesize($file);
           if ($size[0] < $size[1]) {
             $orientation = 'portrait';
-            $pic_width = 25;
-            $new_line = 45;
-            $no_pr_row = 2;
-            if ($count > 8) {
-              break;
+            if ($no_of_pics <= 2) {
+              $pic_width = 55;
+              $new_line = 45;
+              $no_pr_row = 1;
+            }
+            elseif ($no_of_pics <= 3) {
+              $pic_width = 50;
+              $new_line = 40;
+              $no_pr_row = 1;
+            }
+            else {
+              $pic_width = 26;
+              $new_line = 43;
+              $no_pr_row = 2;
+              if ($count > 8) {
+                break;
+              }
             }
           }
           else {
@@ -83,6 +95,14 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
             }
           }
 
+          if ($old_orientation != $orientation) {
+            $pr_row = 0;
+            if ($old_orientation == 'landscape') {
+              $new_line += 40;
+            }
+
+          }
+
           $width += $pic_width + $spacing;
 
           if ($pr_row >= $no_pr_row) {
@@ -92,7 +112,7 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
             $width = 0;
             $pr_row = 0;
           }
-          
+
           $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
 
@@ -100,7 +120,9 @@ class ExerciseAdvancedPdfPortrait extends TCPDF {
             $y += $new_line;
             $x = 10;
           }
-          $pr_row++;          
+          $pr_row++;
+          $old_orientation = $orientation;
+          $count++;
         }
       }
     }
