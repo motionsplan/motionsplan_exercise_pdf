@@ -4,11 +4,15 @@
  * Layout for default A4
  */
 class ExercisePdfPortrait extends TCPDF {
-
-  function __construct() {
-    parent::__construct('P','mm','A4');
+  function __construct($disccache = FALSE) {
+    parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
     $this->SetMargins(0, 0, 0);  
+    $this->AliasNbPages();    
+  }
+  
+  function getPictureFilename() {
+    
   }
 
   function AddPage($node) {

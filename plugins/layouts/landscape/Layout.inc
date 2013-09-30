@@ -5,11 +5,11 @@
  */
 
 class ExercisePdfLandscape extends TCPDF {
-  function __construct() {
-    parent::__construct('L','mm','A4');
+  function __construct($disccache = FALSE) {
+    parent::__construct('L','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
+    $this->AliasNbPages();    
   }
-  
   function Header() {
     // intentionally left blank to avoid line in the header
   }
