@@ -3,10 +3,10 @@
  * @file
  * Layout for default A4
  */
-class ExercisePdfPortrait extends FPDF
-{
+class ExercisePdfPortrait extends TCPDF {
+
   function __construct() {
-    parent::fpdf('P','mm','A4');
+    parent::__construct('P','mm','A4');
     $this->SetAutoPageBreak(FALSE);
     $this->SetMargins(0, 0, 0);  
   }
@@ -17,8 +17,8 @@ class ExercisePdfPortrait extends FPDF
     $this->SetMargins(0, 0, 0);  
     $this->setX(0);
     $this->setY(0);    
-    $title = "  " . utf8_decode($node->title);
-    $description = utf8_decode(strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']));
+    $title = "  " . $node->title;
+    $description = strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']);
     $keywords = array();
     /*
     foreach ($node->taxonomy as $taxonomy) {
@@ -122,8 +122,8 @@ class ExercisePdfPortrait extends FPDF
   
     $this->SetFont('Helvetica', null, 17);
     $this->setTextColor(0, 0, 0);
-
-    $this->MultiCell(0, 8, $description, 0);
+    $this->MultiCell(0, 8, str_replace("\n",' ',$description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+    //$this->MultiCell(0, 8, $description, 0);
 
     $this->Image(dirname(__FILE__) . '/../../../mp-logo.png', 8, 270, 50, 0, '', 'http://motionsplan.dk/');
     $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg', 80, 268, 45, 0, '', 'http://motionsplan.dk/');    
