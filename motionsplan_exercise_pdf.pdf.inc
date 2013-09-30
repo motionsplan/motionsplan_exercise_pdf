@@ -4,7 +4,7 @@
 * Code for the PDF's
 */
 
-class ExerciseProgramCompactPdf extends FPDF {
+class ExerciseProgramCompactPdf extends TCPDF {
   var $widths;
   var $aligns;
   var $imgs;

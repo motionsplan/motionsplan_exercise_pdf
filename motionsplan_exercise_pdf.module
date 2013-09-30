@@ -248,7 +248,6 @@ function motionsplan_exercise_pdf_admin_settings_submit($form, &$form_state) {
 function article_pdf($node) {
   global $base_url;
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
-  require_once libraries_get_path('fpdf') . '/src/fpdf.php';    
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
   $title = $node->title;
