@@ -1,10 +1,10 @@
 <?php
 /**
-* @file
-* Code for the PDF's
-*/
+ * @file
+ * Code for the PDF's
+ */
 
-class ExerciseProgramCompactPdf extends TCPDF {
+class ExerciseProgramCompactPdf extends FPDF {
   var $widths;
   var $aligns;
   var $imgs;
