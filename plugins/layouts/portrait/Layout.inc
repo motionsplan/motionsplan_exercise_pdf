@@ -61,7 +61,7 @@ class ExercisePdfPortrait extends TCPDF {
       $spacing = 5;
       $count = 0;
       $picture_rows = 1;
-      $style = 'exercise_extended_pdf';
+      $style = 'exercise_pdf';
       $style_array = image_style_load($style);
       $no_of_pics = count($node->field_exercise_images[LANGUAGE_NONE]);
       foreach ($node->field_exercise_images[LANGUAGE_NONE] as $image) {
