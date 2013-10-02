@@ -1,8 +1,12 @@
 name = Exercise PDF
-description = Prints a pdf of an exercise
-package = Motionsplan
 core = 7.x
-
+package = Motionsplan
+description = Prints a pdf of an exercise
+project = motionsplan_exercise_pdf
 dependencies[] = ctools
 dependencies[] = libraries
 dependencies[] = chart
+features[features_api][] = api:2
+features[image][] = exercise_extended_pdf
+features[image][] = exercise_pdf
+features_exclude[dependencies][image] = image

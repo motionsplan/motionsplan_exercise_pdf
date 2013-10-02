@@ -3,6 +3,8 @@
  * @file
  * Code for the PDF for the exercises and exercise programs
  */
+include_once 'motionsplan_exercise_pdf.features.inc';
+
 
 /**
  * Implementation of hook_menu()
