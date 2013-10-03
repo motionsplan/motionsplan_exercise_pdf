@@ -5,6 +5,7 @@
  */
 class ExercisePdfPortrait extends TCPDF {
   protected $font = 'Helvetica';
+  protected $title_fill_color = array(255, 255, 255);
 
   public function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
@@ -16,6 +17,17 @@ class ExercisePdfPortrait extends TCPDF {
   protected function getPictureFilename() {
     
   }
+  
+  /**
+   * Set title color in RGB array
+   *
+   * @var array $rgb An array with rgb codes
+   *
+   * @return void
+   */
+  public function setTitleColor(array $rgb) {
+      $this->title_fill_color = $rgb;
+  }
 
   protected function addTitle($title) {
     $title_size = 30;
@@ -25,7 +37,7 @@ class ExercisePdfPortrait extends TCPDF {
     }
     $this->SetFont($this->font, 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
-    $this->SetFillColor(0, 0, 0);
+    $this->SetFillColor($this->title_fill_color);
     $this->Cell(0, 30, $title, null, 2, 'L', TRUE);  
   } 
 
