@@ -4,6 +4,8 @@
  * Layout for default A4
  */
 class ExercisePdfPortrait extends TCPDF {
+  protected $font = 'Helvetica';
+
   function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
@@ -33,7 +35,7 @@ class ExercisePdfPortrait extends TCPDF {
     $url = $base_url. '/node/' . $node->nid;
     $title_size = 30;
 
-    $this->SetFont('Helvetica', 'B', $title_size);
+    $this->SetFont($this->font, 'B', $title_size);
 
     $title_width = $this->GetStringWidth($title);
 
@@ -41,14 +43,14 @@ class ExercisePdfPortrait extends TCPDF {
       $title_size = 25;
     }
 
-    $this->SetFont('Helvetica', 'B', $title_size);
+    $this->SetFont($this->font, 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
     $this->Cell(0, 30, $title, null, 2, 'L', TRUE);
     $this->SetLeftMargin(10);
     $this->SetRightMargin(10);
     /*
     $this->SetY(35);
-    $this->SetFont('Helvetica', null, 10);
+    $this->SetFont($this->font, null, 10);
     $this->MultiCell(0, 5, utf8_decode(implode($keywords, ", ")), 0, 'L');
     */
     $this->setY(40);
@@ -124,7 +126,7 @@ class ExercisePdfPortrait extends TCPDF {
       $this->setY($new_y + $new_line);
     }
   
-    $this->SetFont('Helvetica', null, 17);
+    $this->SetFont($this->font, null, 17);
     $this->setTextColor(0, 0, 0);
     $this->MultiCell(0, 8, str_replace("\n",' ',$description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
     //$this->MultiCell(0, 8, $description, 0);
@@ -133,7 +135,7 @@ class ExercisePdfPortrait extends TCPDF {
     $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg', 80, 268, 45, 0, '', 'http://motionsplan.dk/');    
     $this->Image(dirname(__FILE__) . '/../../../cc-by-sa_340x340.png', 190, 3, 17, 0, '');
 
-    $this->SetFont('Helvetica', null, 8);
+    $this->SetFont($this->font, null, 8);
     $this->setY(280);
     $this->setX(6);
     $this->MultiCell(50, 8, $url, 0, 'C');
