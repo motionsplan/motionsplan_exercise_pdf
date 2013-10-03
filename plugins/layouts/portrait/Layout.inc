@@ -25,10 +25,10 @@ class ExercisePdfPortrait extends TCPDF {
    *
    * @return void
    */
-  public function setTitleColor(array $rgb) {
-      $this->title_fill_color = $rgb;
+  public function setTitleBackgroundColor(array $rgb) {
+    $this->title_fill_color = $rgb;
   }
-
+  
   protected function addTitle($title) {
     $title_size = 30;
     $title_width = $this->GetStringWidth($title);
@@ -37,7 +37,7 @@ class ExercisePdfPortrait extends TCPDF {
     }
     $this->SetFont($this->font, 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
-    $this->SetFillColor($this->title_fill_color);
+    $this->SetFillColorArray($this->title_fill_color);
     $this->Cell(0, 30, $title, null, 2, 'L', TRUE);  
   } 
 
