@@ -17,13 +17,25 @@ class ExercisePdfPortrait extends TCPDF {
     
   }
 
+  protected function addTitle($title) {
+    $title_size = 30;
+    $title_width = $this->GetStringWidth($title);
+    if ($title_width > 200) {
+      $title_size = 25;
+    }
+    $this->SetFont($this->font, 'B', $title_size);
+    $this->SetTextColor(255, 255, 255);
+    $this->Cell(0, 30, $title, null, 2, 'L', TRUE);  
+  } 
+
   function AddPage($node) {
     global $base_url;
     parent::AddPage();
     $this->SetMargins(0, 0, 0);  
     $this->setX(0);
     $this->setY(0);    
-    $title = "  " . $node->title;
+    $url = $base_url. '/node/' . $node->nid;
+    $this->addTitle("  " . $node->title);
     $description = strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']);
     $keywords = array();
     /*
@@ -32,20 +44,7 @@ class ExercisePdfPortrait extends TCPDF {
     }
     */
 
-    $url = $base_url. '/node/' . $node->nid;
-    $title_size = 30;
 
-    $this->SetFont($this->font, 'B', $title_size);
-
-    $title_width = $this->GetStringWidth($title);
-
-    if ($title_width > 200) {
-      $title_size = 25;
-    }
-
-    $this->SetFont($this->font, 'B', $title_size);
-    $this->SetTextColor(255, 255, 255);
-    $this->Cell(0, 30, $title, null, 2, 'L', TRUE);
     $this->SetLeftMargin(10);
     $this->SetRightMargin(10);
     /*
