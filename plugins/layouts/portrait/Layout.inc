@@ -6,14 +6,14 @@
 class ExercisePdfPortrait extends TCPDF {
   protected $font = 'Helvetica';
 
-  function __construct($disccache = FALSE) {
+  public function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
     $this->SetMargins(0, 0, 0);  
     $this->AliasNbPages();    
   }
   
-  function getPictureFilename() {
+  protected function getPictureFilename() {
     
   }
 
@@ -25,10 +25,11 @@ class ExercisePdfPortrait extends TCPDF {
     }
     $this->SetFont($this->font, 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
+    $this->SetFillColor(0, 0, 0);
     $this->Cell(0, 30, $title, null, 2, 'L', TRUE);  
   } 
 
-  function AddPage($node) {
+  public function AddPage($node) {
     global $base_url;
     parent::AddPage();
     $this->SetMargins(0, 0, 0);  
