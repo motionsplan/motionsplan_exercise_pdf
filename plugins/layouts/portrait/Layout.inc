@@ -32,7 +32,10 @@ class ExercisePdfPortrait extends TCPDF {
   protected function addTitle($title) {
     $title_size = 30;
     $title_width = $this->GetStringWidth($title);
-    if ($title_width > 200) {
+    
+    if ($title_width > 80) {
+      $title_size = 23;
+    } elseif ($title_width > 70) {
       $title_size = 25;
     }
     $this->SetFont($this->font, 'B', $title_size);
