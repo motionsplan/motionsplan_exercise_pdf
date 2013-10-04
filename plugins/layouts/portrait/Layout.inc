@@ -140,12 +140,11 @@ class ExercisePdfPortrait extends TCPDF {
   
     $this->SetFont($this->font, null, 17);
     $this->setTextColor(0, 0, 0);
-    $this->MultiCell(0, 8, str_replace("\n",' ',$description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
+    $this->MultiCell(0, 8, str_replace("\n", ' ', $description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
     //$this->MultiCell(0, 8, $description, 0);
 
     $this->Image(dirname(__FILE__) . '/../../../mp-logo.png', 8, 270, 50, 0, '', 'http://motionsplan.dk/');
-    $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg', 80, 268, 45, 0, '', 'http://motionsplan.dk/');    
-    $this->Image(dirname(__FILE__) . '/../../../cc-by-sa_340x340.png', 190, 3, 17, 0, '');
+    $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg', 80, 268, 45, 0, '', 'http://motionsplan.dk/');
 
     $this->SetFont($this->font, null, 8);
     $this->setY(280);
@@ -154,8 +153,12 @@ class ExercisePdfPortrait extends TCPDF {
 
     $qr_file = $this->getBarcodePath($url, 200, 200);
     if ($qr_file !== false && file_exists($qr_file)) {
-      $this->Image($qr_file,  160, 245, 45, 0, '');
+      $this->Image($qr_file, 182, 3, 24, 0);
     }
+    
+    $this->SetLineWidth(1.6);
+    $this->SetDrawColor(185);
+    $this->Circle(190, 292, 45);
   }
 
   /**
