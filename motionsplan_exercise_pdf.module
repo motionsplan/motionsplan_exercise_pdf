@@ -55,8 +55,8 @@ function motionsplan_exercise_pdf_menu() {
   $items['node/%node/pdf-all-cards'] = array(
     'title' => t('Exercise PDF cards'),
     'page callback' => 'exerciseprogram_print_pdf_cards_exercises',
-    'page arguments' => array(2),
-    'access callback' => TRUE,
+    'page arguments' => array(1),
+    'access callback' => 'exerciseprogram_pdf_access',
     'type' => MENU_LOCAL_TASK,
   );        
   return $items;
@@ -349,14 +349,13 @@ function exercise_pdf_advanced($node) {
 /**
  * Prints A4 of the exercises in a program.
  */
-function exerciseprogram_print_pdf_cards_exercises() {
+function exerciseprogram_print_pdf_cards_exercises($node) {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait');
   
-  $node = node_load(arg(1));
   $exercises = $node->field_program_exercises[LANGUAGE_NONE];
   $nids = array();
   foreach ($exercises as $key => $exercise) {
