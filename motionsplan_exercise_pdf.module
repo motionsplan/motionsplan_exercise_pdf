@@ -10,6 +10,7 @@ include_once 'motionsplan_exercise_pdf.features.inc';
  * Implementation of hook_menu()
  */ 
 function motionsplan_exercise_pdf_menu() {
+  /*
   $items['node/%node/pdf'] = array(
     'title' => 'PDF',
     'page callback' => 'exercise_pdf_landscape',
@@ -18,6 +19,7 @@ function motionsplan_exercise_pdf_menu() {
     'access callback' => 'exercise_pdf_access',
     'access arguments' => array(1)
   );
+  */
   $items['node/%node/pdf2'] = array(
     'title' => 'PDF2',
     'page callback' => 'exercise_pdf_portrait',
@@ -42,7 +44,7 @@ function motionsplan_exercise_pdf_menu() {
     'access callback' => 'article_pdf_access',
     'access arguments' => array(1)
   );          
-  $items['node/%node/pdf4'] = array(
+  $items['node/%node/pdf-compact'] = array(
     'title' => t('PDF'),
     'page callback' => 'exerciseprogram_print_compact_pdf',
     'page arguments' => array(1),
@@ -50,15 +52,13 @@ function motionsplan_exercise_pdf_menu() {
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
   );
-  /*  
-  $items['exerciseprogram/print_compact/%/exercisespdf'] = array(
+  $items['node/%node/pdf-all-cards'] = array(
     'title' => t('Exercise PDF cards'),
-    'page callback' => 'exerciseprogram_print_compact_pdf_of_exercises',
+    'page callback' => 'exerciseprogram_print_pdf_cards_exercises',
     'page arguments' => array(2),
     'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-  );
-  */        
+    'type' => MENU_LOCAL_TASK,
+  );        
   return $items;
 }
 
@@ -349,12 +349,20 @@ function exercise_pdf_advanced($node) {
 /**
  * Prints A4 of the exercises in a program.
  */
-function exerciseprogram_print_compact_pdf_of_exercises() {
+function exerciseprogram_print_pdf_cards_exercises() {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
+  ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait');
+  
+  $node = node_load(arg(1));
+  $exercises = $node->field_program_exercises[LANGUAGE_NONE];
+  $nids = array();
+  foreach ($exercises as $key => $exercise) {
+    $nids[] = $exercise['target_id'];
+  }
 
-  $nids = exerciseprogram_get_nids(arg(2));
   if (sizeof($nids)<=0) {
     return '<strong>Du skal tilføje øvelser for at kunne udskrive</strong>';
   }
@@ -366,6 +374,10 @@ function exerciseprogram_print_compact_pdf_of_exercises() {
 
   foreach ($nids as $nid) {
     $node = node_load($nid);
+    $term = taxonomy_term_load($node->field_exercise_category[LANGUAGE_NONE][0]['tid']);
+    $hex = $term->field_category_color[LANGUAGE_NONE][0]['rgb'];
+    $rgb = hex2rgb($hex);
+    $pdf->setTitleBackgroundColor($rgb);
     $pdf->AddPage($node);
   }
   $pdf->Output();

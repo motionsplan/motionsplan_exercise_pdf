@@ -5,7 +5,7 @@
  */
 class ExercisePdfPortrait extends TCPDF {
   protected $font = 'Helvetica';
-  protected $title_fill_color = array(255, 255, 255);
+  protected $title_fill_color = array(0, 0, 0);
 
   public function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
