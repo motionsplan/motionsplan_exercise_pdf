@@ -14,7 +14,7 @@ abstract class Motionsplan_Pdf extends TCPDF {
    */
   protected function getBarcodePath($url, $height, $width) {
     $chart = array(
-      '#chart_id' => 'exercise_chart',
+      '#chart_id' => 'exercise_chart_' . md5($url),
       '#type' => CHART_TYPE_QR,
       '#size' => chart_size(200, 200) 
     );
@@ -22,6 +22,6 @@ abstract class Motionsplan_Pdf extends TCPDF {
     $chart['#data'][] = '';
     $chart['#labels'][] = $url;
         
-    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
+    return chart_copy($chart, 'exercise_chart_' . md5($url), 'public://charts/');
   }  
 }
