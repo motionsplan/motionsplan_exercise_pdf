@@ -3,7 +3,10 @@
  * @file
  * Layout for advanced A4
  */
-class ExerciseAdvancedPdfPortrait extends TCPDF {
+
+require_once dirname(__FILE__) . '/../Base.php';
+  
+class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
   function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);

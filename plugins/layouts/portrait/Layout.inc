@@ -3,7 +3,9 @@
  * @file
  * Layout for default A4
  */
-class ExercisePdfPortrait extends TCPDF {
+require_once dirname(__FILE__) . '/../Base.inc';
+
+class ExercisePdfPortrait extends Motionsplan_Pdf {
   protected $font = 'Helvetica';
   protected $title_fill_color = array(0, 0, 0);
 
