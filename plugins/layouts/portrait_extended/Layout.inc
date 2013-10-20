@@ -154,27 +154,5 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
       $this->Image($qr_file,  160, 245, 45, 0, '');
     }
   }
-  
-  /**
-   * Gets barcode file path
-   *
-   * @param string  $url url
-   * @param integer $height Height
-   * @param integer $width Width
-   *
-   * @return string or false
-   */
-  protected function getBarcodePath($url, $height, $width) {
-    $chart = array(
-      '#chart_id' => 'exercise_chart',
-      '#type' => CHART_TYPE_QR,
-      '#size' => chart_size(200, 200) 
-    );
-        
-    $chart['#data'][] = '';
-    $chart['#labels'][] = $url;
-        
-    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
-  }  
 }
 
