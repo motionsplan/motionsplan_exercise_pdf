@@ -4,7 +4,7 @@
  * Layout for advanced A4
  */
 
-require_once dirname(__FILE__) . '/../Base.php';
+require_once dirname(__FILE__) . '/../Base.inc';
   
 class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
   function __construct($disccache = FALSE) {
