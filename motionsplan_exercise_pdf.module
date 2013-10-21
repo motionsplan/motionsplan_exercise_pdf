@@ -55,8 +55,9 @@ function motionsplan_exercise_pdf_menu() {
   $items['node/%node/pdf-all-cards'] = array(
     'title' => t('Exercise PDF cards'),
     'page callback' => 'exerciseprogram_print_pdf_cards_exercises',
-    'page arguments' => array(2),
-    'access callback' => TRUE,
+    'page arguments' => array(1),
+    'access callback' => 'exerciseprogram_pdf_access',
+    'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
   );        
   return $items;
