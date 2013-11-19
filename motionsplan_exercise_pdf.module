@@ -58,8 +58,33 @@ function motionsplan_exercise_pdf_menu() {
     'page arguments' => array(1),
     'access callback' => 'exerciseprogram_pdf_access',
     'type' => MENU_LOCAL_TASK,
+  );
+  $items['shuffle-pdf'] = array(
+    'title' => t('PDF with categories'),
+    'page callback' => 'workout_shuffle_categories',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['shuffle-pdf-compact'] = array(
+    'title' => t('PDF with categories'),
+    'page callback' => 'workout_shuffle_categories_compact',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
   );        
   return $items;
+}
+
+/**
+ * Checks for access for exercises
+ */
+function workout_shuffle_pdf_access($term) {
+  return true;
+  if ($term->type != 'motionsplan_activity_category') {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**
@@ -276,6 +301,37 @@ function hex2rgb($hex) {
   $rgb = array($r, $g, $b);
   //return implode(",", $rgb); // returns the rgb values separated by commas
   return $rgb; // returns an array with the rgb values
+}
+
+
+function workout_shuffle_categories() {
+  global $base_url;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+  ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('motionsplan_activity_category');
+  $taxonomy = taxonomy_get_tree($vocabulary->vid, 0, NULL, TRUE);
+  $pdf = new ShuffleWorkoutPdf();
+  foreach ($taxonomy as $term) {
+    $pdf->addTerm($term);
+  }
+  $pdf->Output('workoutshuffle.pdf', 'I');
+}
+
+function workout_shuffle_categories_compact() {
+  global $base_url;
+  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+  ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('motionsplan_activity_category');
+  $taxonomy = taxonomy_get_tree($vocabulary->vid, 0, NULL, TRUE);
+  $pdf = new ShuffleWorkoutPdfCompact();
+  foreach ($taxonomy as $term) {
+    $pdf->addTerm($term);
+  }
+  $pdf->Output('workoutshuffle.pdf', 'I');
 }
 
 /**
