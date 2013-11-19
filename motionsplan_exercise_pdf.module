@@ -57,6 +57,7 @@ function motionsplan_exercise_pdf_menu() {
     'page callback' => 'exerciseprogram_print_pdf_cards_exercises',
     'page arguments' => array(1),
     'access callback' => 'exerciseprogram_pdf_access',
+    'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
   );
   $items['shuffle-pdf'] = array(
@@ -70,7 +71,7 @@ function motionsplan_exercise_pdf_menu() {
     'title' => t('PDF with categories'),
     'page callback' => 'workout_shuffle_categories_compact',
     'page arguments' => array(1),
-    'access callback' => TRUE,
+    'access callback' => array(1),
     'type' => MENU_LOCAL_TASK,
   );        
   return $items;
@@ -334,6 +335,7 @@ function workout_shuffle_categories_compact() {
   $pdf->Output('workoutshuffle.pdf', 'I');
 }
 
+
 /**
  * Creates a pdf of an exercise node
  * 
@@ -405,13 +407,14 @@ function exercise_pdf_advanced($node) {
 /**
  * Prints A4 of the exercises in a program.
  */
-function exerciseprogram_print_pdf_cards_exercises($node) {
+function exerciseprogram_print_pdf_cards_exercises() {
   global $base_path;
   require_once libraries_get_path('fpdf') . '/src/fpdf.php';
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait');
   
+  $node = node_load(arg(1));
   $exercises = $node->field_program_exercises[LANGUAGE_NONE];
   $nids = array();
   foreach ($exercises as $key => $exercise) {

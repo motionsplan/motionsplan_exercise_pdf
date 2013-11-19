@@ -3,7 +3,9 @@
  * @file
  * Layout for default A4
  */
-class ExercisePdfPortrait extends TCPDF {
+require_once dirname(__FILE__) . '/../Base.inc';
+
+class ExercisePdfPortrait extends Motionsplan_Pdf {
   protected $font = 'Helvetica';
   protected $title_fill_color = array(0, 0, 0);
 
@@ -163,27 +165,5 @@ class ExercisePdfPortrait extends TCPDF {
     $this->SetDrawColor(185);
     $this->Circle(190, 292, 45);
   }
-
-  /**
-   * Gets barcode file path
-   *
-   * @param string  $url url
-   * @param integer $height Height
-   * @param integer $width Width
-   *
-   * @return string or false
-   */
-  protected function getBarcodePath($url, $height, $width) {
-    $chart = array(
-      '#chart_id' => 'exercise_chart',
-      '#type' => CHART_TYPE_QR,
-      '#size' => chart_size(200, 200) 
-    );
-        
-    $chart['#data'][] = '';
-    $chart['#labels'][] = $url;
-        
-    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
-  } 
 }
 

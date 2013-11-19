@@ -4,7 +4,9 @@
  * Layout in landscape for an exercise
  */
 
-class ExercisePdfLandscape extends TCPDF {
+require_once dirname(__FILE__) . '/../Base.inc';
+
+class ExercisePdfLandscape extends Motionsplan_Pdf {
   function __construct($disccache = FALSE) {
     parent::__construct('L','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
@@ -108,26 +110,4 @@ class ExercisePdfLandscape extends TCPDF {
        $this->Image($qr_file, 235, 135, 45, 0, '');
     }
   }
-
-  /**
-   * Gets barcode file path
-   *
-   * @param string  $url url
-   * @param integer $height Height
-   * @param integer $width Width
-   *
-   * @return string or false
-   */
-  protected function getBarcodePath($url, $height, $width) {
-    $chart = array(
-      '#chart_id' => 'exercise_chart',
-      '#type' => CHART_TYPE_QR,
-      '#size' => chart_size(200, 200) 
-    );
-        
-    $chart['#data'][] = '';
-    $chart['#labels'][] = $url;
-        
-    return chart_copy($chart, 'exercise_chart_' . uniqid(), 'public://charts/');
-  } 
 }
