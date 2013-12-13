@@ -5,6 +5,38 @@
  */
 include_once 'motionsplan_exercise_pdf.features.inc';
 
+function motionsplan_exercise_pdf_libraries_info() {
+  $libraries['tcpdf'] = array(
+    'name' => 'TCPDF',
+    'vendor url' => 'http://www.tcpdf.org',
+    'download url' => 'http://sourceforge.net/projects/tcpdf/files/',
+    'version arguments' => array(
+      'file' => 'tcpdf.php',
+      'pattern' => '/\Version     : ((\d+)\.(\d+)\.(\d+))/',
+    ),
+    'files' => array(
+      'php' => array(
+        'tcpdf.php',
+      ),
+    ),
+  );
+  $libraries['fpdi'] = array(
+    'name' => 'FPDI',
+    'vendor url' => 'http://www.setasign.com/products/fpdi',
+    'download url' => 'http://www.setasign.com/products/fpdi/downloads',
+    'files' => array(
+      'php' => array(
+        'fpdi.php',
+      ),
+    ),
+    'integration files' => array(
+      'vih_lectures_pdf' => array(
+        'php' => array('fpdi.php'),
+      ),
+    ),
+  );
+  return $libraries;
+}
 
 /**
  * Implementation of hook_menu()
@@ -345,7 +377,11 @@ function workout_shuffle_categories_compact() {
  */
 function exercise_pdf_portrait($node) {
   global $base_url;
-  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+  
+  if (!($library = libraries_load('tcpdf')) && empty($library['loaded'])) {
+     die('Library is not loaded');
+  }
+
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait');
 
   $term = taxonomy_term_load($node->field_exercise_category[LANGUAGE_NONE][0]['tid']);
@@ -523,6 +559,28 @@ function motionsplan_exercise_pdf_node_operations() {
       'callback' => 'node_operations_pdf',
   ));
   return $operations;
+}
+
+
+function motionsplan_exercise_pdf_action_info() {
+  return array(
+    'motionsplan_exercise_pdf_print_action' => array(
+      'type' => 'node',
+      'label' => t('Generate PDF'),
+      'behavior' => array('generate_pdf'),
+      'configurable' => FALSE,
+      'vbo_configurable' => TRUE,
+      'triggers' => array('any'),
+    ),
+  );
+}
+
+function motionsplan_exercise_pdf_print_action(&$entity, $context) {
+  $message = t('Node title is %title. Sincerely, %hero', array(
+    '%title' => $node->title,
+    '%hero' => $context['hero'],
+  ));
+  drupal_set_message($message);
 }
 
 /**
