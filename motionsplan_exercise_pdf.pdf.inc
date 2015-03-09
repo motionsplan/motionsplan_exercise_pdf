@@ -4,30 +4,30 @@
  * Code for the PDF's
  */
 
-
 class ShuffleWorkoutPdfCompact extends TCPDF {
   protected $node;
   protected $url;
   protected $font = 'Helvetica';
 
   function __construct() {
-    global $base_url;      
+    global $base_url;
     parent::__construct('P','mm','A4');
     $this->SetAutoPageBreak(TRUE, 30);
-    $this->SetMargins(10, 10, 10);  
+    $this->SetMargins(10, 10, 10);
     $this->AliasNbPages();
     $this->SetY(290);
     $this->SetX(0);
   }
-  
+
   function Header() {
+    // intentionally left blank to avoid line in the header.
   }
-  
+
   function Footer() {
     $this->Image(dirname(__FILE__) . '/mp-logo.png', 8, 275, 50, 0, '', 'http://motionsplan.dk/');
     $this->Image(dirname(__FILE__) . '/vih_logo.jpg', 155, 270, 45, 0, '', 'http://vih.dk/');      
   }
-  
+
   function addTerm($term) {
     $title_size = 15;
     $this->SetFont('Helvetica', 'B', $title_size);
@@ -45,23 +45,24 @@ class ShuffleWorkoutPdf extends TCPDF {
   protected $font = 'Helvetica';
 
   function __construct() {
-    global $base_url;      
+    global $base_url;
     parent::__construct('P','mm','A4');
     $this->SetAutoPageBreak(TRUE, 30);
-    $this->SetMargins(10, 10, 10);  
+    $this->SetMargins(10, 10, 10);
     $this->AliasNbPages();
     $this->SetY(290);
     $this->SetX(0);
   }
-  
+
   function Header() {
+    // intentionally left blank to avoid line in the header.
   }
-  
+
   function Footer() {
     $this->Image(dirname(__FILE__) . '/mp-logo.png', 8, 275, 50, 0, '', 'http://motionsplan.dk/');
     $this->Image(dirname(__FILE__) . '/vih_logo.jpg', 155, 270, 45, 0, '', 'http://vih.dk/');      
   }
-  
+
   function addTerm($term) {
     $this->AddPage();
     $title_size = 30;
@@ -132,7 +133,7 @@ class ExerciseProgramCompactPdf extends FPDF {
               $this->Image($pic, $calc_x, $calc_y, $pic_width, $pic_height);
               $calc_x += $pic_width;
             }
-          }  
+          }
         }
       }
       // Put the position to the right of the cell.
@@ -155,7 +156,7 @@ class ExerciseProgramCompactPdf extends FPDF {
       $this->AddPage($this->CurOrientation);
     }
   }
-  
+
   /**
    * Computes the number of lines a MultiCell of width w will take
    *
@@ -219,19 +220,20 @@ class ArticlePdf extends TCPDF {
   protected $url;
 
   function __construct($node) {
-    global $base_url;      
+    global $base_url;
     parent::__construct('P','mm','A4');
     $this->SetAutoPageBreak(TRUE, 30);
-    $this->SetMargins(10, 10, 10);  
-    $this->AliasNbPages();    
+    $this->SetMargins(10, 10, 10);
+    $this->AliasNbPages();
     $this->node = $node;
-    
-    $this->url = $base_url. '/node/' . $this->node->nid;    
+
+    $this->url = $base_url. '/node/' . $this->node->nid;
   }
-  
+
   function Header() {
+    // intentionally left blank to avoid line in the header
   }
-  
+
   function Footer() {
     $this->Image(dirname(__FILE__) . '/mp-logo.png', 8, 275, 50, 0, '', 'http://motionsplan.dk/');
     $this->Image(dirname(__FILE__) . '/vih_logo.jpg', 155, 270, 45, 0, '', 'http://vih.dk/');      
@@ -240,7 +242,7 @@ class ArticlePdf extends TCPDF {
     $this->setX(6);
     $this->MultiCell(50, 8, $this->url, 0, 'C');
     $this->SetY(-15);
-    $this->SetFont('Helvetica', null, 12);    
+    $this->SetFont('Helvetica', null, 12);
     $this->Cell(0,10, $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, 0, 'C');
   }
 
@@ -263,20 +265,20 @@ class ArticlePdf extends TCPDF {
       $dst = image_style_path($style, $this->node->field_article_image[LANGUAGE_NONE][0]['uri']);
       if (file_exists($dst) || image_style_create_derivative($style, $this->node->field_article_image[LANGUAGE_NONE][0]['uri'], $dst)) {
         $this->Image($dst, 10, 10, 190, 0, '', 'http://motionsplan.dk/');
-      }    
+      }
     }
     $this->Image(dirname(__FILE__) . '/cc-by-sa_340x340.png', 180, 13, 17, 0, '');
-  
+
     $this->SetY(43);
     $title_size = 15;
     $this->SetFont('Helvetica', 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
     $this->Cell(0, 17, $title, null, 2, 'L', TRUE);
-  
+
     $this->Ln(8);
     $this->SetFont('Helvetica', 'N', 10);
     $this->SetTextColor(0, 0, 0);
-    $this->writeHTML($body, TRUE, FALSE, TRUE, FALSE, '');    
+    $this->writeHTML($body, TRUE, FALSE, TRUE, FALSE, '');
   }
 
   protected function clearJavascript($s) {
@@ -286,7 +288,7 @@ class ArticlePdf extends TCPDF {
        $stop = stripos($s, '</script>');
        if ((is_numeric($start)) && (is_numeric($stop))) {
          $s = substr($s, 0, $start) . substr($s, ($stop + strlen('</script>')));
-       } 
+       }
        else {
          $do = false;
        }
@@ -294,4 +296,3 @@ class ArticlePdf extends TCPDF {
      return trim($s);
    }
 }
-

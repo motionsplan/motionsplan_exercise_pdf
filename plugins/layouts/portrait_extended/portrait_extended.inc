@@ -10,4 +10,3 @@ $plugin = array(
   'category' => t('Motionsplan'),
   'icon' => 'screenshot.png',
 );
-

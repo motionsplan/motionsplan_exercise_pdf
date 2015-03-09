@@ -5,21 +5,21 @@
  */
 
 require_once dirname(__FILE__) . '/../Base.inc';
-  
+
 class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
   function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
-    $this->SetMargins(0, 0, 0);  
-    $this->AliasNbPages();    
+    $this->SetMargins(0, 0, 0);
+    $this->AliasNbPages();
   }
 
-  function AddPage($node) {
+  function AddNewPage($node) {
     global $base_url;
     parent::AddPage();
-    $this->SetMargins(0, 0, 0);  
+    $this->SetMargins(0, 0, 0);
     $this->setX(0);
-    $this->setY(0);    
+    $this->setY(0);
     $title = "  " . $node->title;
     $intro = $node->field_exercise_intro[LANGUAGE_NONE][0]['value'];
     $description = $node->field_exercise_guide[LANGUAGE_NONE][0]['value'];
@@ -32,16 +32,16 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
     */
 
     $url = $base_url. '/node/' . $node->nid;
-  
+
     $title_size = 20;
 
     $this->SetFont('Helvetica', 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
     $this->Cell(0, 20, $title, null, 2, 'L', TRUE);
-  
+
     $this->SetLeftMargin(10);
     $this->SetRightMargin(10);
-    
+
     $this->SetY(230);
     $this->SetX(10);
     $this->SetTextColor(0, 0, 0);
@@ -49,6 +49,8 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
     $this->SetFont('Helvetica', null, 10);
     $this->MultiCell(40, 5, implode($keywords, "\n"), 0, 'C');
 
+    // Image handling.
+    $old_orientation = '';
     $style = 'exercise_extended_pdf';
     $style_array = image_style_load($style);
 
@@ -92,7 +94,7 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
             $orientation = 'landscape';
             $pic_width = 55;
             $new_line = 20;
-            $no_pr_row = 1;            
+            $no_pr_row = 1;
             if ($count > 5) {
               break;
             }
@@ -129,7 +131,7 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
         }
       }
     }
-  
+
     $this->SetFont('Helvetica', 'B', 12);
     $this->setTextColor(0, 0, 0);
     $this->setY(30);
@@ -155,4 +157,3 @@ class ExerciseAdvancedPdfPortrait extends Motionsplan_Pdf {
     }
   }
 }
-

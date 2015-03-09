@@ -12,14 +12,14 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
   public function __construct($disccache = FALSE) {
     parent::__construct('P','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
-    $this->SetMargins(0, 0, 0);  
-    $this->AliasNbPages();    
+    $this->SetMargins(0, 0, 0);
+    $this->AliasNbPages();
   }
-  
+
   protected function getPictureFilename() {
-    
+
   }
-  
+
   /**
    * Set title color in RGB array
    *
@@ -30,11 +30,11 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
   public function setTitleBackgroundColor(array $rgb) {
     $this->title_fill_color = $rgb;
   }
-  
+
   protected function addTitle($title) {
     $title_size = 30;
     $title_width = $this->GetStringWidth($title);
-    
+
     if ($title_width > 80) {
       $title_size = 23;
     } elseif ($title_width > 70) {
@@ -43,25 +43,25 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
     $this->SetFont($this->font, 'B', $title_size);
     $this->SetTextColor(255, 255, 255);
     $this->SetFillColorArray($this->title_fill_color);
-    $this->Cell(0, 30, $title, null, 2, 'L', TRUE);  
-  } 
+    $this->Cell(0, 30, $title, null, 2, 'L', TRUE);
+  }
 
-  public function AddPage($node) {
+  public function AddNewPage($node) {
     global $base_url;
     parent::AddPage();
-    $this->SetMargins(0, 0, 0);  
+    $this->SetMargins(0, 0, 0);
     $this->setX(0);
-    $this->setY(0);    
+    $this->setY(0);
     $url = $base_url. '/node/' . $node->nid;
     $this->addTitle("  " . $node->title);
     $description = strip_tags($node->field_exercise_intro[LANGUAGE_NONE][0]['value']);
     $keywords = array();
+
     /*
     foreach ($node->taxonomy as $taxonomy) {
       $keywords[] = $taxonomy->name;
     }
     */
-
 
     $this->SetLeftMargin(10);
     $this->SetRightMargin(10);
@@ -127,7 +127,7 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
             }
           }
           $width += $pic_width + $spacing;
-    
+
           if ($width > 200) {
             $y += $new_line;
             $x = 10;
@@ -135,14 +135,14 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
             $width = 0;
             $new_y += $new_line;
           }
-          
+
           $this->Image($file, $x, $y, $pic_width, 0, '');
           $x += $pic_width + $spacing;
         }
       }
       $this->setY($new_y + $new_line);
     }
-  
+
     $this->SetFont($this->font, null, 17);
     $this->setTextColor(0, 0, 0);
     $this->MultiCell(0, 8, str_replace("\n", ' ', $description), 0, 'L', FALSE, 1, '', '', TRUE, 0, TRUE);
@@ -160,10 +160,9 @@ class ExercisePdfPortrait extends Motionsplan_Pdf {
     if ($qr_file !== false && file_exists($qr_file)) {
       $this->Image($qr_file, 182, 3, 24, 0);
     }
-    
+
     $this->SetLineWidth(1.6);
     $this->SetDrawColor(185);
     $this->Circle(190, 292, 45);
   }
 }
-

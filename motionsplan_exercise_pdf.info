@@ -3,6 +3,7 @@ core = 7.x
 package = Motionsplan
 description = Prints a pdf of an exercise
 project = motionsplan_exercise_pdf
+version = 7.x-1.0
 dependencies[] = ctools
 dependencies[] = libraries
 dependencies[] = chart

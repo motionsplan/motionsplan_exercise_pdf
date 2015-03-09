@@ -10,13 +10,10 @@ class ExercisePdfLandscape extends Motionsplan_Pdf {
   function __construct($disccache = FALSE) {
     parent::__construct('L','mm','A4', TRUE, 'UTF-8', $disccache);
     $this->SetAutoPageBreak(FALSE);
-    $this->AliasNbPages();    
-  }
-  function Header() {
-    // intentionally left blank to avoid line in the header
+    $this->AliasNbPages();
   }
 
-  function AddPage($node) {
+  function AddNewPage($node) {
     global $base_url;
 
     parent::AddPage();
@@ -72,21 +69,21 @@ class ExercisePdfLandscape extends Motionsplan_Pdf {
             }
           }
           $width += $pic_width + $spacing;
-  
+
           if ($width > 200) {
             $y += $new_line;
             $x = 10;
           }
-  
+
           $this->Image($file,$x,$y,$pic_width,0,'');
           $x += $pic_width + $spacing;
-        }      
-      
+        }
+
       }
     }
-  
+
     $this->Line(220, 30, 220, 220);
-  
+
     $this->Image(dirname(__FILE__) . '/../../../vih_logo.jpg',240,120,32,0,'', 'http://vih.dk/');
     $this->Image(dirname(__FILE__) . '/../../../mp-logo.png',235,180,50,0,'', 'http://motionsplan.dk/');
 
