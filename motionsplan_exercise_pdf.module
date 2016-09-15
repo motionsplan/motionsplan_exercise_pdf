@@ -110,6 +110,18 @@ function motionsplan_exercise_pdf_menu() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function motionsplan_exercise_pdf_theme($existing, $type, $theme, $path) {
+  return array(
+    'entity_print__motionsplan_exercise_program' => array(
+      'base hook' => 'entity_print',
+      'template' => 'entity-print--motionsplan-exercise-program',
+    ),
+  );
+}
+
+/**
  * Checks for access for exercises
  */
 function workout_shuffle_pdf_access($term) {
@@ -339,7 +351,7 @@ function hex2rgb($hex) {
 
 function workout_shuffle_categories() {
   global $base_url;
-  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('fpdf') . '/fpdf.php';
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
@@ -354,7 +366,7 @@ function workout_shuffle_categories() {
 
 function workout_shuffle_categories_compact() {
   global $base_url;
-  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('fpdf') . '/fpdf.php';
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
 
@@ -445,7 +457,7 @@ function exercise_pdf_advanced($node) {
  */
 function exerciseprogram_print_pdf_cards_exercises() {
   global $base_path;
-  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('fpdf') . '/fpdf.php';
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   ctools_include('motionsplan_exercise_pdf.pdf', 'motionsplan_exercise_pdf', '.');
   ctools_include('Layout', 'motionsplan_exercise_pdf', 'plugins/layouts/portrait');
@@ -482,7 +494,7 @@ function exerciseprogram_print_pdf_cards_exercises() {
  */
 function exerciseprogram_print_compact_pdf($node) {
   global $base_path;
-  require_once libraries_get_path('fpdf') . '/src/fpdf.php';
+  require_once libraries_get_path('fpdf') . '/fpdf.php';
 
   // HACK START included because Article PDF uses TCPDF
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
